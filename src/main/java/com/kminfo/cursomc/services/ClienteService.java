@@ -25,4 +25,15 @@ public class ClienteService {
 		List<Cliente> obj = clienteRepository.findAll();
 		return obj;
 	}
+	
+
+	public Cliente insert(Cliente obj) {
+		obj.setId(null);
+		return clienteRepository.save(obj);
+	}
+	
+	public Cliente update(Cliente obj) {
+		findById(obj.getId());
+		return clienteRepository.save(obj);
+	}
 }

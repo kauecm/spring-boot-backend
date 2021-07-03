@@ -25,4 +25,14 @@ public class PedidoService {
 		List<Pedido> obj = pedidoRepository.findAll();
 		return obj;
 	}
+
+	public Pedido insert(Pedido obj) {
+		obj.setId(null);
+		return pedidoRepository.save(obj);
+	}
+	
+	public Pedido update(Pedido obj) {
+		findById(obj.getId());
+		return pedidoRepository.save(obj);
+	}
 }
