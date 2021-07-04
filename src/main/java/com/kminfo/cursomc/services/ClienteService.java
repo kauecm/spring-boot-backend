@@ -4,11 +4,13 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.kminfo.cursomc.domain.Categoria;
 import com.kminfo.cursomc.domain.Cliente;
 import com.kminfo.cursomc.repositories.ClienteRepository;
+import com.kminfo.cursomc.services.exceptions.DataIntegrityException;
 import com.kminfo.cursomc.services.exceptions.ObjectNotFoundException;
 @Service
 public class ClienteService {
@@ -36,4 +38,13 @@ public class ClienteService {
 		findById(obj.getId());
 		return clienteRepository.save(obj);
 	}
+	
+	public void delete(Integer id) {
+		findById(id);
+		try {
+		clienteRepository.deleteById(id);
+		}catch(DataIntegrityViolationException e) {
+			throw new DataIntegrityException("Não é possivel excluir pois possui produtos");
+		}
+		}
 }

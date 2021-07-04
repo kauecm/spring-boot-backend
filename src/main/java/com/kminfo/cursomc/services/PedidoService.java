@@ -4,11 +4,13 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.kminfo.cursomc.domain.Categoria;
 import com.kminfo.cursomc.domain.Pedido;
 import com.kminfo.cursomc.repositories.PedidoRepository;
+import com.kminfo.cursomc.services.exceptions.DataIntegrityException;
 import com.kminfo.cursomc.services.exceptions.ObjectNotFoundException;
 @Service
 public class PedidoService {
@@ -22,8 +24,7 @@ public class PedidoService {
 	}
 	
 	public List<Pedido> findAll(){
-		List<Pedido> obj = pedidoRepository.findAll();
-		return obj;
+		return  pedidoRepository.findAll();
 	}
 
 	public Pedido insert(Pedido obj) {
@@ -35,4 +36,13 @@ public class PedidoService {
 		findById(obj.getId());
 		return pedidoRepository.save(obj);
 	}
+	
+	public void delete(Integer id) {
+		findById(id);
+		try {
+		pedidoRepository.deleteById(id);
+		}catch(DataIntegrityViolationException e) {
+			throw new DataIntegrityException("Não é possivel excluir pois possui produtos");
+		}
+		}
 }
