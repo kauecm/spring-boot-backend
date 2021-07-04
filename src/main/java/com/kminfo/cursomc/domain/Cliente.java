@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -14,9 +15,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.kminfo.cursomc.domain.enums.TipoCliente;
 
 @Entity
@@ -32,12 +31,12 @@ public class Cliente implements Serializable {
 	private String cpf_cnpj;
 	private Integer tipo;
 
+	@OneToMany(mappedBy = "cliente", cascade=CascadeType.ALL)
+	private List<Endereco> endereco = new ArrayList<>();
+
 	@ElementCollection
 	@CollectionTable(name = "telefone")
 	private Set<String> telefones = new HashSet<>();
-
-	@OneToMany(mappedBy = "cliente")
-	private List<Endereco> endereco = new ArrayList<>();
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "cliente")
@@ -52,7 +51,7 @@ public class Cliente implements Serializable {
 		this.nome = nome;
 		this.email = email;
 		this.cpf_cnpj = cpf_cnpj;
-		this.tipo = tipo.getCod();
+		this.tipo = (tipo ==null) ? null: tipo.getCod();
 	}
 
 	public Integer getId() {
