@@ -10,7 +10,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -20,7 +19,7 @@ public class Estado implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private String id;
+	private Integer id;
 	private String nome;
 	
 	@JsonIgnore
@@ -31,16 +30,16 @@ public class Estado implements Serializable {
 		
 	}
 
-	public Estado(String id, String nome) {
+	public Estado(Integer id, String nome) {
 		this.id = id;
 		this.nome = nome;
 	}
 
-	public String getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
